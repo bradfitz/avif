@@ -19,3 +19,48 @@ jobs:
         go-version: ${{ matrix.go-version }}
     - name: Test
       run: go test
+    - name: Test WASM fallback
+      run: go test -tags nodynamic
+
+  cross-build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: linux
+            goarch: "386"
+          - goos: linux
+            goarch: arm
+            goarm: "5"
+          - goos: linux
+            goarch: arm
+            goarm: "7"
+          - goos: linux
+            goarch: mips
+          - goos: linux
+            goarch: mipsle
+          - goos: android
+            goarch: arm64
+          - goos: windows
+            goarch: arm64
+          - goos: freebsd
+            goarch: amd64
+          - goos: openbsd
+            goarch: amd64
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Install Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
+    - name: Cross-compile package and tests
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+        GOARM: ${{ matrix.goarm }}
+        CGO_ENABLED: "0"
+      run: |
+        go build ./...
+        go test --exec=true ./...

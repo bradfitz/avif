@@ -1,4 +1,4 @@
-//go:build (unix || darwin || windows) && !nodynamic
+//go:build (linux || darwin || windows) && !android && !(nodynamic || arm || 386 || mips || mipsle)
 
 package avif
 
@@ -313,6 +313,9 @@ func init() {
 		dynamicErr = fmt.Errorf("minimum required libavif version is 1.1.0")
 	}
 }
+
+// dynamicBuild reports whether this build can load a shared library.
+const dynamicBuild = true
 
 var (
 	libavif    uintptr

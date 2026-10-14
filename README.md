@@ -8,6 +8,12 @@ Based on [libavif](https://github.com/AOMediaCodec/libavif) with [dav1d](https:/
 
 The library will first try to use a dynamic/shared library (if installed) via [purego](https://github.com/ebitengine/purego) and will fall back to WASM.
 
+Dynamic loading is enabled only on 64-bit Linux, macOS, and Windows, excluding
+Android. All other builds, including every 32-bit architecture (`386`, `arm`,
+`mips`, and `mipsle`), use WASM without requiring the `nodynamic` tag. The
+native bindings aren't 32-bit safe (they crash on `386`), and purego doesn't
+build on the BSDs without cgo.
+
 For a pure Go alternative, see [gav1d](https://github.com/gen2brain/gav1d), an AV1 and AVIF decoder and encoder with SIMD support, no CGo/WASM and no dependencies.
 
 ### Build tags

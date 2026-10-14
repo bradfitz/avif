@@ -1,4 +1,4 @@
-//go:build (!unix && !darwin && !windows) || nodynamic
+//go:build (!linux && !darwin && !windows) || android || nodynamic || arm || 386 || mips || mipsle
 
 package avif
 
@@ -7,6 +7,9 @@ import (
 	"image"
 	"io"
 )
+
+// dynamicBuild reports whether this build can load a shared library.
+const dynamicBuild = false
 
 var (
 	dynamic    = false

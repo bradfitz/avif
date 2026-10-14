@@ -1,4 +1,4 @@
-//go:build windows && !nodynamic
+//go:build windows && !(nodynamic || arm || 386 || mips || mipsle)
 
 package avif
 

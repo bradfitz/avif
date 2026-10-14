@@ -1,4 +1,4 @@
-//go:build darwin && !nodynamic
+//go:build darwin && !(nodynamic || arm || 386 || mips || mipsle)
 
 package avif
 
